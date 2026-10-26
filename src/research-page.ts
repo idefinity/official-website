@@ -107,6 +107,17 @@ function paint(detail: TopicDetail, index: ResearchIndex | null) {
   const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
   if (description) description.content = pick(detail.summary, language);
 
+  // A topic is a different document from the ledger, so it needs its own
+  // canonical. The static one points at the ledger, which would fold every
+  // topic into it and leave the ledger ranked instead of the entries.
+  const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+  if (canonical) {
+    const url = new URL(location.href);
+    url.search = `?id=${encodeURIComponent(detail.id)}`;
+    url.hash = "";
+    canonical.href = url.toString();
+  }
+
   const fragment = document.createDocumentFragment();
 
   const kicker = document.createElement("p");

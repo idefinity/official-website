@@ -163,6 +163,15 @@ async function showProduct(id: string) {
   const description = document.querySelector<HTMLMetaElement>('meta[name="description"]');
   if (description) description.content = pick(product.tagline, language);
 
+  // Same reasoning as the research page: a product is not the catalogue.
+  const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+  if (canonical) {
+    const url = new URL(location.href);
+    url.search = `?id=${encodeURIComponent(product.id)}`;
+    url.hash = "";
+    canonical.href = url.toString();
+  }
+
   body.innerHTML = renderProductDetail(product, index?.catalog, related, language);
   body.dataset.state = "ready";
   body.classList.add("product-body");

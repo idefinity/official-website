@@ -946,9 +946,40 @@ async function shift(page) {
   await context.close();
 }
 
+// 18. A detail page is its own document. The static canonical in research.html
+//     points at the ledger, so without this the search engine is told to fold
+//     every entry into the list — the entries would never rank on their own.
+{
+  const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  await page.goto(`${base}research.html?id=gpu-crawl`, { waitUntil: "domcontentloaded" });
+  await page.waitForSelector('#article[data-state="ready"]', { timeout: 15000 });
+  const topic = await page.getAttribute("link[rel=canonical]", "href");
+  expect(
+    topic?.includes("research.html?id=gpu-crawl"),
+    `the topic canonical should name the topic, it is "${topic}"`,
+  );
+
+  await page.goto(`${base}research.html`, { waitUntil: "domcontentloaded" });
+  await page.waitForTimeout(800);
+  const ledger = await page.getAttribute("link[rel=canonical]", "href");
+  expect(
+    ledger?.endsWith("research.html"),
+    `the ledger canonical should be the ledger, it is "${ledger}"`,
+  );
+
+  await page.goto(`${base}product.html?id=graphfin`, { waitUntil: "domcontentloaded" });
+  await page.waitForTimeout(1200);
+  const product = await page.getAttribute("link[rel=canonical]", "href");
+  expect(
+    product?.includes("product.html?id=graphfin"),
+    `the product canonical should name the product, it is "${product}"`,
+  );
+  await page.close();
+}
+
 await browser.close();
 
-// 18. The sitemap is generated from the two indexes, so it cannot go stale the
+// 19. The sitemap is generated from the two indexes, so it cannot go stale the
 //     way the hand-kept one did: every catalogue row is a URL, and robots.txt
 //     still points at the map.
 {
