@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>idefinity — 想法无限科技</title>
+    <meta
+      name="description"
+      content="想法无限科技做图数据库和它的界面。关系、时间、查询放在同一个地方。"
+    />
+    <meta property="og:title" content="idefinity — 想法无限科技" />
+    <meta
+      property="og:description"
+      content="想法无限科技做图数据库和它的界面。关系、时间、查询放在同一个地方。"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://idefinity.com/loop-fallback.jpg" />
+    <meta name="theme-color" content="#0b0d0e" />
+    <link rel="canonical" href="https://idefinity.com/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" as="image" href="/loop-fallback.jpg" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "深圳市想法无限科技有限公司",
+        "alternateName": "idefinity",
+        "url": "https://idefinity.com/",
+        "email": "ziang.zhang@idefinity.com",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "深圳",
+          "addressCountry": "CN"
+        }
+      }
+    </script>
+    <script type="module" src="/src/main.ts"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main" data-i18n="skip">跳到正文</a>
+
+    <!-- One renderer for the whole site. Each panel moves the lens, so what
+         changes between pages is the crop, not the object. -->
+    <div class="stage" aria-hidden="true">
+      <figure class="figure">
+        <img
+          class="figure-still"
+          id="figure-still"
+          src="/loop-fallback.jpg"
+          alt=""
+          width="1600"
+          height="1000"
+          fetchpriority="high"
+        />
+        <div class="scene-host" id="scene-host"></div>
+      </figure>
+      <div class="stage-scrim"></div>
+    </div>
+
+    <div class="progress" aria-hidden="true">
+      <span class="progress-bar" id="progress-bar"></span>
+    </div>
+
+    <header class="header">
+      <a class="brand" href="#top" aria-label="idefinity 首页">
+        <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M4 12C4 7 9 7 12 12c3 5 8 5 8 0s-5-5-8 0c-3 5-8 5-8 0Z"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+          />
+        </svg>
+        <span class="brand-word">idefinity</span>
+      </a>
+      <nav id="navigation" aria-label="主导航">
+        <!-- The menu is filled from research/index.json at runtime. Nothing in
+             it is written by hand, so adding a topic never means editing the
+             header. Without JavaScript this is still a plain #research link. -->
+        <div class="nav-item" data-nav-item data-nav-kind="research" data-open="false">
+          <a
+            href="#research"
+            data-i18n="navResearch"
+            aria-haspopup="true"
+            aria-expanded="false"
+            aria-controls="research-menu"
+            >研究</a
+          >
+          <div class="nav-menu" id="research-menu" data-nav-menu></div>
+        </div>
+        <div class="nav-item" data-nav-item data-nav-kind="product" data-open="false">
+          <a
+            href="#product"
+            data-i18n="navProduct"
+            aria-haspopup="true"
+            aria-expanded="false"
+            aria-controls="product-menu"
+            >产品</a
+          >
+          <div class="nav-menu" id="product-menu" data-nav-menu></div>
+        </div>
+        <a href="#about" data-i18n="navAbout">关于</a>
+        <a class="nav-library" href="research.html"
+          ><span data-i18n="navAllResearch">全部研究</span
+          ><span aria-hidden="true">↗</span></a
+        >
+        <a class="nav-library" href="product.html"
+          ><span data-i18n="navAllProducts">全部产品</span
+          ><span aria-hidden="true">↗</span></a
+        >
+        <a
+          class="nav-source"
+          href="https://github.com/ziangziangziang/graphfin"
+          >GitHub<span aria-hidden="true">↗</span></a
+        >
+      </nav>
+      <div class="header-tools">
+        <button id="language" class="language" type="button" hidden>
+          <span data-language="zh">中</span><span aria-hidden="true"> / </span
+          ><span data-language="en">EN</span>
+        </button>
+        <button
+          id="menu"
+          class="menu"
+          type="button"
+          aria-expanded="false"
+          aria-controls="navigation"
+          hidden
+        >
+          <span data-i18n="menu">菜单</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="viewport">
+      <main id="main" class="deck" tabindex="-1">
+      <section
+        class="panel"
+        id="top"
+        data-panel="0"
+        data-side="left"
+        data-scene-section="hero"
+      >
+        <div class="panel-inner">
+          <p class="eyebrow">
+            <span class="status-dot" aria-hidden="true"></span
+            ><span data-i18n="eyebrow">深圳市想法无限科技有限公司 · 深圳</span>
+          </p>
+          <h1 id="hero-title">
+            <span data-i18n="headlineOne">让关系，</span
+            ><span class="muted" data-i18n="headlineTwo">能被看见。</span>
+          </h1>
+          <p class="hero-description" data-i18n="description">
+            我们做图数据库，也做它的界面。数据之间怎么连、过一段时间怎么变，
+            应该在一个画面里就能看清楚。
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#product"
+              ><span data-i18n="seeProduct">看看产品</span
+              ><span aria-hidden="true">↗</span></a
+            >
+            <a class="button secondary" href="#research"
+              ><span data-i18n="readNotes">读研究笔记</span
+              ><span aria-hidden="true">→</span></a
+            >
+          </div>
+          <a
+            class="source-link"
+            href="https://github.com/ziangziangziang/graphfin"
+            ><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path
+                d="M12 .7a11.4 11.4 0 0 0-3.6 22.2c.6.1.8-.2.8-.6v-2.2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.1 1.2A11 11 0 0 1 12 5.7c1 0 2 .1 2.8.4 2.2-1.5 3.1-1.2 3.1-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.1v3.4c0 .4.2.7.8.6A11.4 11.4 0 0 0 12 .7Z"
+              /></svg
+            ><span data-i18n="source">在 GitHub 上看代码</span
+            ><span aria-hidden="true">↗</span></a
+          >
+        </div>
+        <div class="panel-foot">
+          <span class="foot-index"
+            ><span class="foot-num">01</span><span class="foot-sep">/</span
+            ><span class="foot-total">04</span
+            ><span class="foot-label" data-i18n="introduction">概览</span></span
+          >
+          <span class="foot-note"
+            ><span class="caption-rule" aria-hidden="true"></span
+            ><span class="cap-live" data-i18n="visualCaption">无限环 · 实时渲染</span
+            ><span class="cap-still" data-i18n="visualCaptionStill">无限环 · 静态一帧</span></span
+          >
+          <a class="foot-next" href="#research"
+            ><span data-i18n="navResearch">研究</span
+            ><span class="foot-arrow" aria-hidden="true">→</span></a
+          >
+        </div>
+      </section>
+
+      <section
+        class="panel"
+        id="research"
+        data-panel="1"
+        data-side="right"
+        data-scene-section="research"
+      >
+        <!-- Scrolls on its own when the ledger outgrows the panel. -->
+        <div class="panel-inner" data-panel-scroll>
+          <p class="kicker">
+            <span class="index">02</span
+            ><span class="kicker-label" data-i18n="researchLabel">研究</span>
+          </p>
+          <h2 id="research-title" data-i18n="researchTitle">
+            我们问过的每个问题，都留了记录。
+          </h2>
+          <p class="lead" data-i18n="researchLead">
+            一个问题一条记录：当初想问什么，量到了什么，最后改了什么。
+            没量过的写「待验证」，不写成结论。
+          </p>
+
+          <!-- Hand-written copy of the three newest entries. It is what a reader
+               sees without JavaScript or if the index fetch fails; with either
+               working, src/research.ts replaces it with the live list. -->
+          <div class="notes">
+            <article class="note" data-topic="webgpu-performance">
+              <p class="note-tag">
+                <span data-i18n="noteOneTag">性能 · 进行中</span
+                ><span class="note-date">2026-10-25</span>
+              </p>
+              <h3 data-i18n="noteOneTitle">把这个场景搬到 WebGPU，能快多少</h3>
+              <p data-i18n="noteOneText">
+                瓶颈在填充率和后处理链，不在绘制调用。按带宽算一遍，
+                预期 10–20%，值得做一个 spike，不值得整体重写。
+              </p>
+              <a class="note-link" href="research.html?id=webgpu-performance"
+                ><span data-i18n="noteOneLink">实测 · 读这条</span
+                ><span aria-hidden="true">↗</span></a
+              >
+            </article>
+
+            <article class="note" data-topic="gpu-crawl">
+              <p class="note-tag">
+                <span data-i18n="noteTwoTag">图形 · 已落地</span
+                ><span class="note-date">2026-10-25</span>
+              </p>
+              <h3 data-i18n="noteTwoTitle">
+                把蠕动挪进顶点着色器，省下的 1.1 毫秒
+              </h3>
+              <p data-i18n="noteTwoText">
+                曲线烘成一张贴图，相位变成一个 uniform。每帧不再重建 1610 个矩阵，
+                主线程从 2.5 毫秒降到 1.39。
+              </p>
+              <a class="note-link" href="research.html?id=gpu-crawl"
+                ><span data-i18n="noteTwoLink">实测 · 读这条</span
+                ><span aria-hidden="true">↗</span></a
+              >
+            </article>
+
+            <article class="note" data-topic="lattice-seam">
+              <p class="note-tag">
+                <span data-i18n="noteThreeTag">图形 · 已落地</span
+                ><span class="note-date">2026-10-25</span>
+              </p>
+              <h3 data-i18n="noteThreeTitle">环上的蜂窝为什么合不拢</h3>
+              <p data-i18n="noteThreeText">
+                奇数列的晶格首尾错半格，接缝上留了一圈只连两根杆的原子。
+                看起来像重叠，其实是少了一根杆。
+              </p>
+              <a class="note-link" href="research.html?id=lattice-seam"
+                ><span data-i18n="noteThreeLink">记录 · 读这条</span
+                ><span aria-hidden="true">↗</span></a
+              >
+            </article>
+          </div>
+        </div>
+        <div class="panel-foot">
+          <span class="foot-index"
+            ><span class="foot-num">02</span><span class="foot-sep">/</span
+            ><span class="foot-total">04</span
+            ><span class="foot-label" data-i18n="researchLabel">研究</span></span
+          >
+          <a class="foot-next" href="#product"
+            ><span data-i18n="navProduct">产品</span
+            ><span class="foot-arrow" aria-hidden="true">→</span></a
+          >
+        </div>
+      </section>
+
+      <section
+        class="panel"
+        id="product"
+        data-panel="2"
+        data-side="left"
+        data-scene-section="product"
+      >
+        <!-- The product block is rendered from product/index.json at build time
+             (see vite.config.ts), so this panel has one source of truth and
+             still reads as a product with JavaScript off. JS repaints it when
+             the language switches. -->
+        <div class="panel-inner" data-panel-scroll>
+          <p class="kicker">
+            <span class="index">03</span
+            ><span class="kicker-label" data-i18n="productLabel">产品</span>
+          </p>
+          <div data-product-panel>
+            <!-- @product-panel -->
+          </div>
+        </div>
+        <div class="panel-foot">
+          <span class="foot-index"
+            ><span class="foot-num">03</span><span class="foot-sep">/</span
+            ><span class="foot-total">04</span
+            ><span class="foot-label" data-i18n="productLabel">产品</span></span
+          >
+          <a class="foot-next" href="#about"
+            ><span data-i18n="navAbout">关于</span
+            ><span class="foot-arrow" aria-hidden="true">→</span></a
+          >
+        </div>
+      </section>
+
+      <section
+        class="panel"
+        id="about"
+        data-panel="3"
+        data-side="right"
+        data-scene-section="about"
+      >
+        <div class="panel-inner">
+          <p class="kicker">
+            <span class="index">04</span
+            ><span class="kicker-label" data-i18n="aboutLabel">关于</span>
+          </p>
+          <h2 id="about-title" data-i18n="aboutTitle">一家在深圳的小公司。</h2>
+          <blockquote class="quote" data-i18n="aboutQuote">
+            「无限」说的是在一件事上待得久一点，不是说什么都做。
+          </blockquote>
+          <p data-i18n="aboutText">
+            想法无限科技做数据库软件，目前主要精力在 GraphFin 上：
+            存储、查询，还有让人能看懂这些数据的界面。
+            公司不大，所以每个决定基本都能追溯到某个人和某次讨论。
+          </p>
+
+          <dl class="contact">
+            <div>
+              <dt data-i18n="contactEmail">邮箱</dt>
+              <dd>
+                <a href="mailto:ziang.zhang@idefinity.com"
+                  >ziang.zhang@idefinity.com</a
+                >
+              </dd>
+            </div>
+            <div>
+              <dt data-i18n="contactCode">代码</dt>
+              <dd>
+                <a href="https://github.com/ziangziangziang"
+                  >github.com/ziangziangziang</a
+                >
+              </dd>
+            </div>
+            <div>
+              <dt data-i18n="contactIcp">备案</dt>
+              <dd>
+                <a href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer noopener"
+                  >粤ICP备2026161143号-1</a
+                >
+              </dd>
+            </div>
+          </dl>
+
+          <footer class="footer">
+            <div class="footer-brand">
+              <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  d="M4 12C4 7 9 7 12 12c3 5 8 5 8 0s-5-5-8 0c-3 5-8 5-8 0Z"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+              </svg>
+              <span>idefinity</span>
+            </div>
+            <div class="footer-meta">
+              <span data-i18n="footerCompany">© 2026 深圳市想法无限科技有限公司</span>
+              <a href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer noopener">粤ICP备2026161143号-1</a>
+              <span data-i18n="footerLicense">Apache 2.0</span>
+            </div>
+          </footer>
+        </div>
+        <div class="panel-foot">
+          <span class="foot-index"
+            ><span class="foot-num">04</span><span class="foot-sep">/</span
+            ><span class="foot-total">04</span
+            ><span class="foot-label" data-i18n="aboutLabel">关于</span></span
+          >
+          <a class="foot-next" href="#top"
+            ><span data-i18n="backToTop">回到开头</span
+            ><span class="foot-arrow" aria-hidden="true">↑</span></a
+          >
+        </div>
+      </section>
+      </main>
+    </div>
+  </body>
+</html>

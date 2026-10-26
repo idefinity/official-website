@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://idefinity.com/research/topic.schema.json",
+  "title": "Research topic",
+  "description": "One question and one answer. See research/README.md for why each field exists.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "title",
+    "track",
+    "kind",
+    "status",
+    "questions",
+    "updated"
+  ],
+  "properties": {
+    "schema": {
+      "const": "idefinity.research.topic/1"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "maxLength": 48,
+      "description": "Slug. Appears in URLs and import/export. Never rename a published one."
+    },
+    "title": {
+      "$ref": "#/$defs/localized"
+    },
+    "summary": {
+      "$ref": "#/$defs/localized",
+      "description": "Two sentences at most. Shown in the list; also the highest-weighted body field after the title."
+    },
+    "track": {
+      "enum": [
+        "rendering",
+        "performance",
+        "data",
+        "interface",
+        "tooling",
+        "writing"
+      ],
+      "description": "Who is affected. Decides where it is filed."
+    },
+    "kind": {
+      "enum": [
+        "study",
+        "experiment",
+        "note",
+        "decision"
+      ],
+      "description": "What kind of answer this is. Decides how it should be read."
+    },
+    "status": {
+      "enum": [
+        "idea",
+        "active",
+        "shipped",
+        "paused",
+        "dropped"
+      ]
+    },
+    "questions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "zh"
+      ],
+      "description": "What was being asked, in both languages. The search leans on these.",
+      "properties": {
+        "zh": {
+          "$ref": "#/$defs/questionList"
+        },
+        "en": {
+          "$ref": "#/$defs/questionList"
+        }
+      }
+    },
+    "verdict": {
+      "type": "string",
+      "maxLength": 240,
+      "description": "The answer in one line. Omit while the question is still open."
+    },
+    "tags": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9][a-z0-9+-]*$"
+      }
+    },
+    "series": {
+      "type": "array",
+      "maxItems": 3,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+      },
+      "description": "Cross-cutting threads, declared in research/taxonomy.json. A series may hold entries from several tracks; a track may not."
+    },
+    "owner": {
+      "type": "string"
+    },
+    "created": {
+      "$ref": "#/$defs/date"
+    },
+    "updated": {
+      "$ref": "#/$defs/date"
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "Names to paths inside data/, e.g. { \"baseline\": \"data/baseline.json\" }."
+    },
+    "links": {
+      "type": "array",
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "label",
+          "href"
+        ],
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "href": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "localized": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "zh"
+      ],
+      "properties": {
+        "zh": {
+          "type": "string",
+          "minLength": 2
+        },
+        "en": {
+          "type": "string"
+        }
+      }
+    },
+    "questionList": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 5,
+      "items": {
+        "type": "string",
+        "minLength": 6,
+        "maxLength": 160
+      }
+    },
+    "date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    }
+  }
+}

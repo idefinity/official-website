@@ -1,0 +1,50 @@
+{
+  "schema": "idefinity.research.topic/1",
+  "id": "gpu-crawl",
+  "title": {
+    "zh": "把蠕动挪进顶点着色器，省下的 1.1 毫秒",
+    "en": "Moving the crawl into the vertex shader for 1.1 ms"
+  },
+  "summary": {
+    "zh": "曲线烘成一张 2048 采样的半浮点贴图，相位变成一个 uniform。每帧不再重建 1610 个矩阵，主线程从 2.5 ms 降到 1.39 ms。",
+    "en": "The curve baked into a 2048-sample half-float texture, the phase reduced to one uniform. 1610 matrices stop being rebuilt each frame; the main thread drops from 2.5 to 1.39 ms."
+  },
+  "track": "rendering",
+  "kind": "experiment",
+  "status": "shipped",
+  "questions": {
+    "zh": [
+      "每帧重建 644 个节点和 966 根连杆的矩阵，能不能整段删掉？",
+      "参数方程挪到 GPU 之后，画面会不会有可见的精度损失？",
+      "省下来的时间，用户在 30 帧的锁下面感觉得到吗？"
+    ],
+    "en": [
+      "Can the per-frame rebuild of 644 node and 966 bond matrices be deleted outright?",
+      "Once the parametric equation moves to the GPU, is the precision loss visible?",
+      "Under a 30 fps cap, can anyone feel the time that was saved?"
+    ]
+  },
+  "verdict": "省了 1.1 ms，肉眼看不出来。真正的收益是把 1610 个矩阵从架构里删掉了——以后加节点不再让每帧变贵。",
+  "tags": [
+    "shader",
+    "instancing",
+    "lut",
+    "three"
+  ],
+  "owner": "zziang",
+  "created": "2026-10-25",
+  "updated": "2026-10-25",
+  "links": [
+    {
+      "label": "src/scene/frame-lut.ts",
+      "href": "https://github.com/idefinity/official-website/blob/main/src/scene/frame-lut.ts"
+    },
+    {
+      "label": "src/scene/material.ts",
+      "href": "https://github.com/idefinity/official-website/blob/main/src/scene/material.ts"
+    }
+  ],
+  "series": [
+    "loop"
+  ]
+}

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>产品 — idefinity</title>
+    <meta
+      name="description"
+      content="想法无限科技的产品：每个都写清楚它是做什么的、做到哪一步了。"
+    />
+    <meta name="theme-color" content="#0b0d0e" />
+    <link rel="canonical" href="https://idefinity.com/product.html" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script type="module" src="/src/product-page.ts"></script>
+  </head>
+  <body>
+    <header class="ledger-head">
+      <a class="ledger-brand" href="/">idefinity</a>
+      <span class="ledger-sep" aria-hidden="true">/</span>
+      <a data-copy="back" href="product.html">产品</a>
+      <span class="ledger-sep" aria-hidden="true">/</span>
+      <span class="product-crumb" data-copy="current"></span>
+      <button
+        id="product-language"
+        class="ledger-lang"
+        type="button"
+        aria-label="Switch to English"
+      >
+        EN
+      </button>
+    </header>
+
+    <main id="product" class="article-body">
+      <p class="article-kicker">产品</p>
+      <h1>正在读产品清单…</h1>
+      <p class="article-lead">
+        要是这段字一直在，说明清单没取到。每个产品的元数据和说明都在仓库的
+        <code>product/items/</code> 里，一个产品一个目录，直接用编辑器打开就行。
+      </p>
+    </main>
+
+    <noscript>
+      <div class="article-body">
+        <p class="article-kicker">产品</p>
+        <h1>清单需要 JavaScript 才能展开。</h1>
+        <p class="article-lead">
+          每个产品的说明在仓库的 <code>product/items/</code> 里。首页
+          <a href="/#product">产品面板</a> 里也有主推的那一个，包括能力和链接。
+        </p>
+      </div>
+    </noscript>
+  </body>
+</html>

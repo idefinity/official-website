@@ -1,0 +1,38 @@
+{
+  "schema": "idefinity.research.topic/1",
+  "id": "lattice-seam",
+  "title": {
+    "zh": "环上的蜂窝为什么合不拢",
+    "en": "Why the honeycomb would not close"
+  },
+  "summary": {
+    "zh": "奇数列的晶格首尾错半格，接缝上出现一圈只连两根杆的原子。眼睛先发现的，几何验算确认的。",
+    "en": "With an odd column count the lattice ends half a cell out of step, leaving a ring of atoms with two bonds instead of three. Spotted by eye, confirmed by counting."
+  },
+  "track": "rendering",
+  "kind": "note",
+  "status": "shipped",
+  "questions": {
+    "zh": [
+      "少数原子看起来像两颗叠在一起，是渲染问题还是几何问题？",
+      "什么样的列数能让蜂窝在环面上真正闭合？"
+    ],
+    "en": [
+      "A few atoms look like two spheres stacked on each other. Is that rendering or geometry?",
+      "Which column counts let a honeycomb actually close on a torus?"
+    ]
+  },
+  "verdict": "环面上完整的蜂窝必须满足 E = 1.5V。接缝处少了 14 根杆，这个比值就掉到 1.489——现在它是场景自检的一条断言。",
+  "tags": [
+    "topology",
+    "hexagon",
+    "torus",
+    "invariant"
+  ],
+  "owner": "zziang",
+  "created": "2026-10-25",
+  "updated": "2026-10-25",
+  "series": [
+    "loop"
+  ]
+}

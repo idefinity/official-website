@@ -1,0 +1,221 @@
+/* The product pages. The deck's panel is styled in style.css; only what a
+   standalone page needs lives here, plus the catalogue grid it shares with
+   nothing else. */
+
+/* The article column is 44rem because prose reads badly wider than that. A
+   grid is the opposite: it wants the width to keep two cards apart. */
+.article-body.catalog-body {
+  max-width: 58rem;
+}
+
+/* ---------- the catalogue ---------- */
+
+/* Cards are their own tiles rather than cells in one ruled table: with a
+   single product, a table would draw an empty second cell next to it. */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 14px;
+  margin-top: 34px;
+}
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 172px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  background: #ffffff04;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.product-card:hover {
+  border-color: var(--line-strong);
+  background: #ffffff09;
+}
+
+.product-card-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.product-card-name {
+  font-size: 19px;
+  letter-spacing: -0.01em;
+}
+
+.product-card-stage {
+  flex: none;
+  padding: 3px 9px;
+  border: 1px solid #d9b45f38;
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+/* Still listed, still linkable, no longer the thing to look at first. */
+.product-card[data-stage="retired"] {
+  opacity: 0.62;
+}
+
+.product-card-tagline {
+  font-size: 14.5px;
+  line-height: 1.66;
+  color: #c7ccc8;
+}
+
+.product-card-meta {
+  margin-top: auto;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--muted-dim);
+}
+
+.product-empty {
+  margin: 32px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* ---------- one product ---------- */
+
+.product-summary {
+  margin: 18px 0 0;
+  max-width: 30em;
+  font-size: 15.5px;
+  line-height: 1.85;
+  color: var(--muted);
+}
+
+.product-status {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 18px 0 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.product-status-note {
+  color: var(--muted-dim);
+}
+
+.product-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.product-highlights {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 32px;
+  margin: 0;
+}
+
+.product-highlights > div {
+  padding: 16px 0;
+  border-top: 1px solid var(--line);
+}
+
+.product-highlights dt {
+  font-size: 15.5px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+}
+
+.product-highlights dd {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--muted);
+}
+
+.product-fact-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+  gap: 18px 24px;
+  margin: 0;
+}
+
+.product-fact-list > div {
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+
+.product-fact-list dt {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-dim);
+}
+
+.product-fact-list dd {
+  margin: 7px 0 0;
+  font-size: 14px;
+  color: #cfd4d0;
+}
+
+.product-related ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.product-related li {
+  margin: 0 0 9px;
+}
+
+.product-related a {
+  font-size: 14.5px;
+  color: var(--gold);
+}
+
+.product-back {
+  margin-top: 56px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line-strong);
+}
+
+.product-back a {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+.product-back a:hover {
+  color: var(--paper);
+}
+
+.product-filters {
+  margin-top: 26px;
+}
+
+.product-crumb {
+  color: var(--paper);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .product-highlights {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+}

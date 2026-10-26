@@ -1,0 +1,45 @@
+{
+  "schema": "idefinity.research.topic/1",
+  "id": "webgpu-performance",
+  "title": {
+    "zh": "把这个场景搬到 WebGPU，能快多少",
+    "en": "What WebGPU would actually buy this scene"
+  },
+  "summary": {
+    "zh": "现在的瓶颈在填充率和后处理链，不在绘制调用。按带宽算一遍，预期提升 10–20%，值得做一个一天的 spike，不值得整个重写。",
+    "en": "The cost is fill rate and the post chain, not draw calls. Budgeting the bandwidth says 10–20 percent, which is worth a one-day spike and not worth a rewrite."
+  },
+  "track": "performance",
+  "kind": "experiment",
+  "status": "active",
+  "questions": {
+    "zh": [
+      "同一画面在 WebGPU 下每帧 GPU 时间会少多少？",
+      "把 onBeforeCompile 的补丁改成节点材质，要动多少行？",
+      "什么条件下值得整体迁移，什么条件下保持 WebGL2？"
+    ],
+    "en": [
+      "How much less GPU time per frame does the same image cost under WebGPU?",
+      "How many lines does it take to turn the onBeforeCompile patches into node materials?",
+      "When is a full migration worth it, and when does WebGL2 stay?"
+    ]
+  },
+  "tags": [
+    "webgpu",
+    "tsl",
+    "bandwidth",
+    "post-processing"
+  ],
+  "owner": "zziang",
+  "created": "2026-10-25",
+  "updated": "2026-10-25",
+  "metrics": {
+    "baseline": "data/baseline.json"
+  },
+  "links": [
+    {
+      "label": "src/scene/material.ts",
+      "href": "https://github.com/idefinity/official-website/blob/main/src/scene/material.ts"
+    }
+  ]
+}

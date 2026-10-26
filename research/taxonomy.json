@@ -1,0 +1,28 @@
+{
+  "schema": "idefinity.taxonomy/1",
+  "updated": "2026-10-25",
+  "tracks": [
+    { "id": "rendering", "zh": "图形", "en": "Rendering" },
+    { "id": "performance", "zh": "性能", "en": "Performance" },
+    { "id": "data", "zh": "数据", "en": "Data" },
+    { "id": "interface", "zh": "界面", "en": "Interface" },
+    { "id": "tooling", "zh": "工具", "en": "Tooling" },
+    { "id": "writing", "zh": "写作", "en": "Writing" }
+  ],
+  "kinds": [
+    { "id": "study", "zh": "读", "en": "Study" },
+    { "id": "experiment", "zh": "实测", "en": "Experiment" },
+    { "id": "note", "zh": "记录", "en": "Note" },
+    { "id": "decision", "zh": "取舍", "en": "Decision" }
+  ],
+  "statuses": [
+    { "id": "idea", "zh": "想法", "en": "Idea" },
+    { "id": "active", "zh": "进行中", "en": "Active" },
+    { "id": "shipped", "zh": "已落地", "en": "Shipped" },
+    { "id": "paused", "zh": "暂停", "en": "Paused" },
+    { "id": "dropped", "zh": "放弃", "en": "Dropped" }
+  ],
+  "series": [
+    { "id": "loop", "zh": "首页那个环", "en": "The loop" }
+  ]
+}

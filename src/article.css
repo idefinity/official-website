@@ -1,0 +1,594 @@
+/* One research note on its own page. Shares the palette with the deck; owns its
+   own scrolling, because the deck's stylesheet locks the document. */
+
+body {
+  min-height: 100svh;
+  background:
+    radial-gradient(120% 70% at 70% -10%, #14191b 0%, #0b0d0e 62%),
+    var(--ink);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.ledger-head {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px var(--pad);
+  border-bottom: 1px solid var(--line);
+  background: #0b0d0ecc;
+  backdrop-filter: blur(14px);
+  font-size: 12.5px;
+  letter-spacing: 0.02em;
+}
+
+.ledger-brand {
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  font-size: 14px;
+}
+
+.ledger-sep {
+  color: var(--muted-dim);
+}
+
+.ledger-head [data-copy="back"] {
+  color: var(--muted);
+}
+
+.ledger-head [data-copy="back"]:hover {
+  color: var(--paper);
+}
+
+.ledger-lang {
+  margin-left: auto;
+  padding: 5px 11px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: transparent;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+.ledger-lang:hover {
+  border-color: var(--gold);
+  color: var(--paper);
+}
+
+.article-body {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: clamp(40px, 7vw, 88px) var(--pad) 96px;
+}
+
+.article-body[data-state="missing"] {
+  padding-top: clamp(80px, 14vw, 160px);
+}
+
+.article-kicker {
+  margin: 0 0 18px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.article-body h1 {
+  margin: 0;
+  max-width: 22em;
+  font-size: clamp(27px, 3.6vw, 40px);
+  line-height: 1.28;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.article-lead {
+  margin: 20px 0 0;
+  max-width: 30em;
+  font-size: 17px;
+  line-height: 1.78;
+  color: #c7ccc8;
+}
+
+.article-meta {
+  margin: 18px 0 0;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  color: var(--muted-dim);
+}
+
+.article-section {
+  margin-top: 44px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line-strong);
+}
+
+.article-section h2 {
+  margin: 0 0 14px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.article-questions ul {
+  margin: 0;
+  padding-left: 1.1em;
+  color: #cfd4d0;
+}
+
+.article-questions li {
+  margin: 0 0 8px;
+  font-size: 15.5px;
+  line-height: 1.75;
+}
+
+.article-verdict {
+  margin: 30px 0 0;
+  padding: 16px 20px;
+  border-left: 2px solid var(--gold);
+  background: #ffffff06;
+  font-size: 15.5px;
+  line-height: 1.8;
+  color: #dfe2dd;
+}
+
+.article-text {
+  margin-top: 30px;
+  color: #c2c7c3;
+}
+
+.article-text h2 {
+  margin: 2.4em 0 0.6em;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  color: var(--paper);
+}
+
+.article-text h3 {
+  margin: 1.9em 0 0.5em;
+  font-size: 16.5px;
+  font-weight: 500;
+  color: var(--paper);
+}
+
+.article-text p {
+  margin: 0 0 1.15em;
+  font-size: 15.5px;
+  line-height: 1.85;
+}
+
+.article-text strong {
+  color: var(--paper);
+  font-weight: 500;
+}
+
+.article-text a {
+  color: var(--gold);
+  border-bottom: 1px solid #d9b45f40;
+}
+
+.article-text ul,
+.article-text ol {
+  margin: 0 0 1.2em;
+  padding-left: 1.2em;
+}
+
+.article-text li {
+  margin: 0 0 0.5em;
+  font-size: 15.5px;
+  line-height: 1.8;
+}
+
+.article-text code {
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: #ffffff0d;
+  font-family: var(--mono);
+  font-size: 0.87em;
+  color: #dfe2dd;
+}
+
+.article-text pre {
+  margin: 0 0 1.4em;
+  padding: 16px 18px;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: #ffffff07;
+  line-height: 1.65;
+}
+
+.article-text pre code {
+  padding: 0;
+  background: none;
+  font-size: 12.5px;
+  color: #cdd2ce;
+}
+
+.article-text blockquote {
+  margin: 0 0 1.4em;
+  padding: 2px 0 2px 18px;
+  border-left: 2px solid #ffffff26;
+  color: var(--muted);
+}
+
+.article-text hr {
+  margin: 2.4em 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+
+.table-wrap {
+  margin: 0 0 1.5em;
+  overflow-x: auto;
+}
+
+.article-text table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.article-text th,
+.article-text td {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.article-text th {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.article-text td.num,
+.article-text th.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.article-data details {
+  border-bottom: 1px solid var(--line);
+}
+
+.article-data summary {
+  padding: 10px 0;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  color: #cfd4d0;
+}
+
+.article-json {
+  margin: 0 0 14px;
+  padding: 14px 16px;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: #ffffff07;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  line-height: 1.7;
+  color: #b9bfba;
+}
+
+.article-links ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.article-links li {
+  margin: 0 0 8px;
+}
+
+.article-links a {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--gold);
+}
+
+.article-nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1px;
+  margin-top: 56px;
+  border-top: 1px solid var(--line-strong);
+  padding-top: 18px;
+}
+
+.article-nav-link {
+  display: grid;
+  gap: 4px;
+  padding: 10px 0;
+}
+
+.article-nav-link span {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-dim);
+}
+
+.article-nav-link strong {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  font-weight: 400;
+  color: #cfd4d0;
+}
+
+.article-nav-link:hover strong {
+  color: var(--gold);
+}
+
+.article-missing h1 {
+  font-size: clamp(24px, 3vw, 32px);
+}
+
+.article-missing p {
+  margin: 16px 0 26px;
+  max-width: 30em;
+  color: var(--muted);
+}
+
+.article-back {
+  display: inline-block;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--gold);
+  font-size: 13px;
+  color: var(--gold);
+}
+
+@media (max-width: 640px) {
+  .ledger-head {
+    gap: 8px;
+    padding: 13px 20px;
+  }
+
+  .article-body {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .article-text p,
+  .article-text li,
+  .article-questions li {
+    font-size: 15px;
+    line-height: 1.8;
+  }
+}
+
+/* ---------- the shelf ---------- */
+
+/* The article column is 44rem because prose reads badly wider than that. A
+   list is the opposite: it wants the width to keep the facets off the title. */
+.article-body.library-body {
+  max-width: 58rem;
+}
+
+.library [hidden] {
+  display: none !important;
+}
+
+.library-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 18px;
+  margin-top: 36px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line-strong);
+}
+
+.library-field {
+  flex: 1 1 240px;
+  min-width: 0;
+}
+
+.library-search {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
+  background: #ffffff06;
+  font: inherit;
+  font-size: 14px;
+  color: var(--paper);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.library-search::placeholder {
+  color: var(--muted-dim);
+}
+
+.library-search:focus {
+  outline: none;
+  border-color: var(--gold);
+  background: #ffffff0d;
+}
+
+.library-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.library-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  padding: 6px 11px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  font-size: 12.5px;
+  color: var(--muted);
+  transition:
+    color 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+.library-chip:hover {
+  border-color: var(--line-strong);
+  color: var(--paper);
+}
+
+.library-chip[aria-pressed="true"] {
+  border-color: var(--paper);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.library-chip-count {
+  font-family: var(--mono);
+  font-size: 10px;
+  opacity: 0.62;
+}
+
+.library-count {
+  margin: 16px 0 0;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--muted-dim);
+}
+
+.library-list {
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.library-row + .library-row {
+  border-top: 1px solid var(--line);
+}
+
+.library-link {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr) auto;
+  gap: 24px;
+  align-items: baseline;
+  padding: 18px 4px;
+  transition: background 0.18s ease;
+}
+
+.library-link:hover {
+  background: #ffffff05;
+}
+
+.library-when {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: var(--muted-dim);
+}
+
+.library-main {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.library-title {
+  font-size: 16.5px;
+  line-height: 1.45;
+  color: var(--paper);
+  text-wrap: balance;
+}
+
+.library-link:hover .library-title {
+  color: #fff;
+}
+
+/* Two lines, whatever the language. The full text is one click away. */
+.library-summary {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  font-size: 13.5px;
+  line-height: 1.62;
+  color: var(--muted);
+}
+
+.library-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.library-facet {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  white-space: nowrap;
+  opacity: 0.9;
+}
+
+.library-series {
+  font-size: 10.5px;
+  color: var(--muted-dim);
+  white-space: nowrap;
+}
+
+.library-empty {
+  margin: 28px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.library-clear {
+  margin-left: 12px;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid var(--gold);
+  background: none;
+  font: inherit;
+  font-size: 13px;
+  color: var(--gold);
+}
+
+@media (max-width: 720px) {
+  .library-link {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 7px;
+    padding: 16px 0;
+  }
+
+  .library-when {
+    order: -1;
+  }
+
+  .library-meta {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 12px;
+  }
+}

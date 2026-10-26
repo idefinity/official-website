@@ -1,0 +1,83 @@
+{
+  "schema": "idefinity.product/1",
+  "id": "graphfin",
+  "name": "GraphFin",
+  "tagline": {
+    "zh": "关系和时间，放在同一个数据库里。",
+    "en": "Relationships and time, in one database."
+  },
+  "summary": {
+    "zh": "一个开源的图数据库。关系，以及每条记录随时间的变化，放在同一个地方。",
+    "en": "An open-source graph database. Relationships, and how each record changes over time, in one place."
+  },
+  "category": "database",
+  "stage": "alpha",
+  "version": "0.1.0",
+  "notice": {
+    "zh": "能跑，能评估，还不建议直接上生产。",
+    "en": "Runs, and is ready to evaluate. Not yet for production."
+  },
+  "highlights": [
+    {
+      "title": { "zh": "关系查询", "en": "Relationship queries" },
+      "text": {
+        "zh": "从一个对象出发，沿着连接找到相关的记录，不用先写一堆 JOIN。",
+        "en": "Start from one object and walk the connections to related records, without writing a wall of joins first."
+      }
+    },
+    {
+      "title": { "zh": "时间序列", "en": "Time series" },
+      "text": {
+        "zh": "对象的历史值跟着对象走。查价格、查温度，不用另搭一套时序库。",
+        "en": "History travels with the object it belongs to. Prices or temperatures, without a second time-series database."
+      }
+    },
+    {
+      "title": { "zh": "单机部署", "en": "Single binary" },
+      "text": {
+        "zh": "一个二进制文件起服务，没有外部依赖，本地也能跑起来看效果。",
+        "en": "One binary starts the service, with no external dependencies, so you can run it locally and look at real output."
+      }
+    },
+    {
+      "title": { "zh": "开源", "en": "Open source" },
+      "text": {
+        "zh": "Apache 2.0。代码和设计上的取舍都写在仓库里，包括做错的部分。",
+        "en": "Apache 2.0. The code and the trade-offs behind it are in the repository, including the ones that did not work."
+      }
+    }
+  ],
+  "facts": [
+    {
+      "label": { "zh": "许可证", "en": "License" },
+      "value": { "zh": "Apache 2.0", "en": "Apache 2.0" }
+    },
+    {
+      "label": { "zh": "引擎", "en": "Engine" },
+      "value": { "zh": "TuGraph 4.5.2", "en": "TuGraph 4.5.2" }
+    },
+    {
+      "label": { "zh": "语言", "en": "Language" },
+      "value": { "zh": "C++17", "en": "C++17" }
+    },
+    {
+      "label": { "zh": "部署", "en": "Deployment" },
+      "value": { "zh": "单机，一个二进制文件", "en": "Single node, one binary" }
+    }
+  ],
+  "links": [
+    {
+      "kind": "repo",
+      "label": { "zh": "源码", "en": "Source" },
+      "href": "https://github.com/ziangziangziang/graphfin"
+    },
+    {
+      "kind": "docs",
+      "label": { "zh": "文档", "en": "Docs" },
+      "href": "https://github.com/ziangziangziang/graphfin/blob/main/docs/README.md"
+    }
+  ],
+  "research": [],
+  "order": 1,
+  "updated": "2026-10-25"
+}

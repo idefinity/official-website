@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>研究台账 — idefinity</title>
+    <meta
+      name="description"
+      content="想法无限科技的研究台账：一个问题一条记录，写清楚量到了什么、最后改了什么。"
+    />
+    <meta name="theme-color" content="#0b0d0e" />
+    <link rel="canonical" href="https://idefinity.com/research.html" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script type="module" src="/src/research-page.ts"></script>
+  </head>
+  <body>
+    <header class="ledger-head">
+      <a class="ledger-brand" href="/">idefinity</a>
+      <span class="ledger-sep" aria-hidden="true">/</span>
+      <a data-copy="back" href="/#research">研究台账</a>
+      <button
+        id="article-language"
+        class="ledger-lang"
+        type="button"
+        aria-label="Switch to English"
+      >
+        EN
+      </button>
+    </header>
+
+    <main id="article" class="article-body">
+      <p class="article-kicker">研究台账</p>
+      <h1>正在读台账…</h1>
+      <p class="article-lead">
+        要是这段字一直在，说明索引没取到。正文和实测数据都在仓库的
+        <code>research/</code> 里，一份 Markdown 加一份 JSON，直接用编辑器打开就行。
+      </p>
+    </main>
+
+    <noscript>
+      <div class="article-body">
+        <p class="article-kicker">研究台账</p>
+        <h1>列表需要 JavaScript 才能展开。</h1>
+        <p class="article-lead">
+          每条记录的正文和实测数据都在仓库的 <code>research/topics/</code> 里，
+          一件课题一个目录。首页 <a href="/#research">研究面板</a> 里也有最近的几条。
+        </p>
+      </div>
+    </noscript>
+  </body>
+</html>

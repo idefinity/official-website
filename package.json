@@ -1,0 +1,32 @@
+{
+  "name": "idefinity-site",
+  "version": "0.1.0",
+  "private": true,
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "predev": "node scripts/research.mjs index && node scripts/product.mjs index",
+    "prebuild": "node scripts/research.mjs index && node scripts/product.mjs index",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "capture": "node scripts/capture-fallback.mjs",
+    "check": "node scripts/check.mjs",
+    "research": "node scripts/research.mjs",
+    "product": "node scripts/product.mjs",
+    "bench": "node scripts/bench-frame.mjs"
+  },
+  "dependencies": {
+    "three": "0.186.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/three": "^0.183.0",
+    "playwright": "^1.58.0",
+    "typescript": "^5.9.3",
+    "vite": "8.3.0"
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://idefinity.com/product/product.schema.json",
+  "title": "Product",
+  "description": "One product, one directory. See CONTENT.md for why each field exists.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "name",
+    "tagline",
+    "summary",
+    "category",
+    "stage",
+    "highlights",
+    "updated"
+  ],
+  "properties": {
+    "schema": {
+      "const": "idefinity.product/1"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "maxLength": 48,
+      "description": "Slug. Appears in URLs and import/export. Never rename a published one."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40,
+      "description": "Proper noun. The same in both languages, so it is not localized."
+    },
+    "tagline": {
+      "$ref": "#/$defs/localized",
+      "description": "One line. What it is, for someone who will read one line."
+    },
+    "summary": {
+      "$ref": "#/$defs/localized",
+      "description": "Two or three sentences. Shown on the deck and at the top of the detail page."
+    },
+    "category": {
+      "enum": ["database", "interface", "tooling", "service"],
+      "description": "What it is. Declared in product/catalog.json."
+    },
+    "stage": {
+      "enum": ["concept", "alpha", "beta", "stable", "retired"],
+      "description": "How far it is. Ordered: concept < alpha < beta < stable < retired."
+    },
+    "version": {
+      "type": "string",
+      "maxLength": 20,
+      "description": "The released number, without the leading v. Omit before the first release."
+    },
+    "notice": {
+      "$ref": "#/$defs/localized",
+      "description": "One caveat next to the stage, e.g. 'runs, but not for production'."
+    },
+    "highlights": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["title", "text"],
+        "properties": {
+          "title": { "$ref": "#/$defs/localized" },
+          "text": { "$ref": "#/$defs/localized" }
+        }
+      },
+      "description": "What it does, in the order a reader should meet it. The deck shows the first four."
+    },
+    "facts": {
+      "type": "array",
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["label", "value"],
+        "properties": {
+          "label": { "$ref": "#/$defs/localized" },
+          "value": { "$ref": "#/$defs/localized" }
+        }
+      },
+      "description": "License, engine, language, deployment — the short answers people ask first. Free-form labels, unique per product."
+    },
+    "links": {
+      "type": "array",
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "label", "href"],
+        "properties": {
+          "kind": {
+            "enum": ["repo", "docs", "download", "demo"],
+            "description": "repo is the primary action; the rest are listed under it."
+          },
+          "label": { "$ref": "#/$defs/localized" },
+          "href": { "type": "string", "pattern": "^(https?://|mailto:|/)" }
+        }
+      }
+    },
+    "research": {
+      "type": "array",
+      "maxItems": 12,
+      "items": { "type": "string" },
+      "description": "Research topic ids that led to this product. Declared here, once; the topic does not point back."
+    },
+    "order": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Where it sits on the deck, lowest first. Ties fall back to the name."
+    },
+    "owner": {
+      "type": "string"
+    },
+    "created": {
+      "$ref": "#/$defs/date"
+    },
+    "updated": {
+      "$ref": "#/$defs/date"
+    }
+  },
+  "$defs": {
+    "localized": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["zh"],
+      "properties": {
+        "zh": { "type": "string", "minLength": 2 },
+        "en": { "type": "string" }
+      }
+    },
+    "date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "measured": "2026-10-25",
+  "machine": "Apple M5, macOS, Chromium (ANGLE/Metal), AC power",
+  "viewport": { "css": [1440, 900], "devicePixelRatio": 1.75, "canvas": [2520, 1575] },
+  "frame": {
+    "capFps": 30,
+    "measuredFps": 30.0,
+    "intervalP50Ms": 33.3,
+    "mainThreadMsPerFrame": 1.39,
+    "scriptMsPerFrame": 0.93,
+    "mainThreadMsPerFrameBeforeShaderMove": 2.5
+  },
+  "memory": {
+    "jsHeapMB": 7.3,
+    "tabMB": 250,
+    "renderTargetsMB": 140
+  },
+  "gpu": {
+    "shareOfFrameBudget": 0.5,
+    "measuredFrameTimeMs": null,
+    "note": "No trustworthy number: EXT_disjoint_timer_query is unreliable here. Inferred from frame time minus main thread."
+  },
+  "geometry": {
+    "nodes": 644,
+    "bonds": 966,
+    "drawCalls": 3,
+    "latticeNodesPerSecond": 0.034
+  },
+  "postChain": {
+    "passes": 12,
+    "attachments": "RGBA16F, 2520x1575, 31.8 MB each",
+    "downsamples": 5,
+    "upsamples": 5,
+    "depthOfFieldPasses": 3
+  },
+  "estimate": {
+    "bandwidthSavedMB": 286,
+    "bandwidthSavedMs": [1.5, 2.0],
+    "expectedGainPercent": [10, 20],
+    "assumptions": [
+      "Eight or nine of twelve attachments can use storeOp=discard",
+      "Unified memory bandwidth 150-200 GB/s",
+      "Fragment cost unchanged: same shaders, same sample counts"
+    ]
+  },
+  "method": "scripts/bench-frame.mjs — CDP Performance.getMetrics over 10 s, frames counted with a MutationObserver on data-crawl"
+}

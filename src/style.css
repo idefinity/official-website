@@ -1,0 +1,1443 @@
+@import "./tokens.css";
+@import "./ui.css";
+
+/* The deck owns horizontal scrolling; nothing should scroll the document. */
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+#main:focus {
+  outline: none;
+}
+
+.skip-link {
+  position: fixed;
+  top: -64px;
+  left: 20px;
+  z-index: 60;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 12px 20px;
+  font-size: 13px;
+}
+
+.skip-link:focus {
+  top: 12px;
+}
+
+/* ---------- the figure ---------- */
+
+/* One scene, fixed behind every panel. The panels do not contain the object;
+   they only move the lens, which is why a page can show a fragment of it. */
+.stage {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 66% 38%, #14191b 0%, #0b0d0e 58%),
+    var(--ink);
+}
+
+.figure {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.figure-still,
+.scene-host {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.figure-still {
+  object-fit: cover;
+  transform-origin: 50% 50%;
+  will-change: transform;
+  opacity: 1;
+  transition: opacity 0.8s ease;
+}
+
+.scene-host {
+  z-index: 1;
+}
+
+.scene-host canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.figure[data-canvas-ready="true"] .figure-still {
+  opacity: 0;
+}
+
+/* Keeps the corners from fighting the type without flattening the metal. */
+.stage-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: radial-gradient(
+    130% 105% at 50% 44%,
+    transparent 34%,
+    #0b0d0e62 74%,
+    #0b0d0ec9 100%
+  );
+}
+
+/* ---------- progress ---------- */
+
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 40;
+  background: #ffffff0f;
+}
+
+.progress-bar {
+  display: block;
+  height: 100%;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, #8a7638, var(--gold));
+}
+
+/* ---------- header ---------- */
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 30;
+  height: var(--header);
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  padding: 0 var(--pad);
+  background: linear-gradient(
+    180deg,
+    #0b0d0e 0%,
+    #0b0d0ee6 42%,
+    #0b0d0e00 100%
+  );
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.brand-mark {
+  width: 26px;
+  height: 26px;
+  color: var(--gold);
+  flex: none;
+}
+
+.brand-word {
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+
+nav {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 34px;
+  font-size: 13.5px;
+  color: #b3b8b6;
+}
+
+nav a {
+  position: relative;
+  padding: 12px 0;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+nav a[aria-current="true"] {
+  color: var(--paper);
+}
+
+nav a[aria-current="true"]::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 2px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.nav-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--paper);
+}
+
+.nav-source span {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ---------- the research menu ---------- */
+
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Desktop opens the menu on hover; a phone has no hover, so the nav gets a
+   plain link to the shelf instead. */
+.nav-library {
+  display: none;
+  align-items: center;
+  gap: 5px;
+}
+
+.nav-library span[aria-hidden="true"] {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.nav-menu {
+  position: absolute;
+  top: 100%;
+  left: -16px;
+  width: 344px;
+  padding: 14px 14px 10px;
+  border: 1px solid var(--line-strong);
+  background: #0e1112f7;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 26px 60px #00000073;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-5px);
+  /* Open at once, hide only after the fade: a discrete property cannot tween,
+     and `visibility: visible` at t=0 also keeps the links focusable. */
+  transition:
+    opacity 0.16s ease,
+    transform 0.16s ease,
+    visibility 0s linear 0.16s;
+}
+
+/* No gap between the trigger's box and the panel: `nav a` already carries 12px
+   of bottom padding, and any real gap would make the pointer leave the wrapper
+   on the way down — closing the menu before it can be used. */
+.nav-item[data-open="true"] .nav-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition-delay: 0s, 0s, 0s;
+}
+
+.nav-menu-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 6px 8px;
+}
+
+.nav-menu-label {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-dim);
+}
+
+.nav-menu-all {
+  font-size: 11.5px;
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+.nav-menu-list,
+.nav-menu-tracks {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-menu-entry {
+  display: block;
+  padding: 8px 6px;
+  transition: background 0.15s ease;
+}
+
+.nav-menu-entry:hover {
+  background: #ffffff08;
+}
+
+.nav-menu-title {
+  display: block;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #d8dcda;
+  transition: color 0.15s ease;
+}
+
+.nav-menu-entry:hover .nav-menu-title {
+  color: #fff;
+}
+
+.nav-menu-facet {
+  display: block;
+  margin-top: 3px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  opacity: 0.75;
+}
+
+.nav-menu-rule {
+  height: 1px;
+  margin: 10px 6px;
+  background: var(--line);
+}
+
+.nav-menu-tracks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px 8px;
+  padding-bottom: 4px;
+}
+
+.nav-menu-track {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px;
+  font-size: 12px;
+  color: var(--muted);
+  transition:
+    color 0.15s ease,
+    background 0.15s ease;
+}
+
+.nav-menu-track:hover {
+  background: #ffffff08;
+  color: var(--paper);
+}
+
+.nav-menu-count {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  color: var(--muted-dim);
+}
+
+.nav-menu-fail {
+  padding: 4px 6px 6px;
+}
+
+.nav-menu-fail p {
+  margin: 0 0 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+@media (max-width: 900px) {
+  .nav-menu {
+    display: none;
+  }
+
+  .nav-library {
+    display: inline-flex;
+  }
+}
+
+.header-tools {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.language {
+  border: 0;
+  border-left: 1px solid var(--line);
+  background: none;
+  padding: 4px 0 4px 20px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--muted-dim);
+  white-space: nowrap;
+}
+
+.language span.selected {
+  color: var(--paper);
+}
+
+.menu {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--line-strong);
+  background: none;
+  padding: 8px 12px;
+  font-size: 12.5px;
+  color: var(--paper);
+}
+
+/* ---------- deck ---------- */
+
+/* The track is moved, not scrolled: native smooth scrolling and scroll snap
+   cancel each other here, and neither hands out a continuous value to drive the
+   lens with. The clip lives on this stationary frame, not on the track — an
+   element that clips itself and then moves takes its own contents with it. */
+.viewport {
+  position: relative;
+  z-index: 2;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.deck {
+  display: flex;
+  height: 100%;
+}
+
+/* Without JavaScript nothing drives the horizontal track, and a hidden
+   scrollbar would leave the rest of the page invisible. Stack it instead. */
+html:not(.js) body {
+  height: auto;
+  overflow-y: auto;
+}
+
+html:not(.js) .viewport {
+  height: auto;
+  overflow: visible;
+}
+
+html:not(.js) .deck {
+  display: block;
+  height: auto;
+}
+
+html:not(.js) .panel {
+  height: auto;
+  min-height: 100svh;
+}
+
+.panel {
+  position: relative;
+  flex: 0 0 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: calc(var(--header) + 6px) var(--pad) 96px;
+}
+
+/* The copy sits on one side and the lens aims the metal at the other, so this
+   gradient only has to hold for the half of the screen with words on it. */
+.panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    #0b0d0e 0%,
+    #0b0d0e 38%,
+    #0b0d0efb 48%,
+    #0b0d0ee0 56%,
+    #0b0d0e94 66%,
+    #0b0d0e33 76%,
+    #0b0d0e00 86%
+  );
+}
+
+.panel[data-side="right"]::before {
+  background: linear-gradient(
+    270deg,
+    #0b0d0e 0%,
+    #0b0d0e 38%,
+    #0b0d0efb 48%,
+    #0b0d0ee0 56%,
+    #0b0d0e94 66%,
+    #0b0d0e33 76%,
+    #0b0d0e00 86%
+  );
+}
+
+/* The page label sits on the same baseline as the bottom of the figure, which
+   on a wide screen means metal directly behind the 9px mono text. A shallow
+   scrim under the whole width keeps the label legible without visibly dimming
+   the object. */
+.panel::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 132px;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(0deg, #0b0d0ee8 0%, #0b0d0e80 42%, #0b0d0e00 100%);
+}
+
+.panel-inner {
+  width: min(100%, 660px);
+  margin-inline: 0 auto;
+}
+
+.panel[data-side="right"] .panel-inner {
+  margin-inline: auto 0;
+}
+
+#top .panel-inner {
+  width: min(100%, 620px);
+}
+
+.panel-foot {
+  position: absolute;
+  left: var(--pad);
+  right: var(--pad);
+  bottom: 34px;
+  display: flex;
+  align-items: center;
+  height: 20px;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  color: #8b9193;
+  text-transform: uppercase;
+  /* The figure runs under this line on wide screens, so the label needs to
+     survive sitting on top of a lit hexagon. */
+  text-shadow:
+    0 1px 8px #0b0d0e,
+    0 0 22px #0b0d0ef2;
+}
+
+.foot-index {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.foot-num {
+  color: var(--gold);
+}
+
+.foot-sep,
+.foot-total {
+  color: #6d7476;
+}
+
+.foot-label {
+  margin-left: 10px;
+  letter-spacing: 0.18em;
+}
+
+.foot-note {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* A caption that says "rendered live" over a captured frame is the one lie this
+   page cannot afford: the whole point is that the figure is real. The still
+   caption stands in whenever the render is not there — no JavaScript, or no
+   WebGL. */
+.cap-still {
+  display: none;
+}
+
+html:not(.js) .cap-live,
+html[data-renderer="static"] .cap-live {
+  display: none;
+}
+
+html:not(.js) .cap-still,
+html[data-renderer="static"] .cap-still {
+  display: inline;
+}
+
+.foot-next {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--muted);
+  transition: color 0.2s ease;
+}
+
+.foot-arrow {
+  font-size: 11px;
+  transition: transform 0.2s ease;
+}
+
+.foot-next:hover .foot-arrow {
+  transform: translateX(3px);
+}
+
+.foot-next[href="#top"]:hover .foot-arrow {
+  transform: translateY(-3px);
+}
+
+/* ---------- type ---------- */
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 28px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  color: #a8aeab;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(42px, 5.2vw, 78px);
+  font-weight: 460;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+}
+
+h1 > span {
+  display: block;
+}
+
+.muted {
+  color: #79817f;
+}
+
+.hero-description {
+  max-width: 30em;
+  margin: 26px 0 0;
+  font-size: clamp(14.5px, 1.1vw, 16.5px);
+  line-height: 1.8;
+  color: #a9afac;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 38px;
+}
+
+.source-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 30px;
+  font-size: 12.5px;
+  color: var(--muted);
+  transition: color 0.2s ease;
+}
+
+.source-link svg {
+  opacity: 0.8;
+}
+
+.source-link span {
+  font-size: 10px;
+}
+
+.kicker {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 0 0 12px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  color: var(--muted-dim);
+}
+
+.index {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--gold);
+  letter-spacing: 0.08em;
+}
+
+h2 {
+  margin: 0;
+  font-size: clamp(28px, 3.3vw, 44px);
+  font-weight: 450;
+  line-height: 1.22;
+  letter-spacing: -0.025em;
+}
+
+.lead {
+  max-width: 34em;
+  margin: 14px 0 0;
+  font-size: clamp(15px, 1.05vw, 16.5px);
+  line-height: 1.8;
+  color: #a2a8a5;
+}
+
+/* ---------- notes ---------- */
+
+/* The ledger only grows. `justify-content: center` would push the heading up
+   under the fixed header once the content is taller than the panel, so the panel
+   starts at the top and the block centres itself with auto margins — they
+   collapse to zero when there is no free space, which is what is wanted.
+   When it still does not fit, this block scrolls, heading included. Scrolling a
+   nested grid instead makes the grid squeeze its own rows and eat the copy. */
+#research.panel {
+  justify-content: flex-start;
+}
+
+#research .panel-inner {
+  margin-block: auto;
+  min-height: 0;
+  max-height: calc(100% - 72px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+
+#research .panel-inner::-webkit-scrollbar {
+  display: none;
+}
+
+.notes {
+  display: grid;
+  gap: 0;
+  margin-top: clamp(22px, 2.4vw, 30px);
+  /* The panel is a flex column with a height cap, and a grid child will happily
+     shrink below its own content there — the cards then overlap the footer
+     instead of scrolling. Refusing to shrink moves that job back to the panel. */
+  flex: none;
+}
+
+/* On a phone the panels stack and the document scrolls; nothing here needs its
+   own scrollbar. */
+@media (max-width: 900px) {
+  #research .panel-inner {
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+/* A list, not three cards: at this column width three columns would set the
+   Chinese copy in fourteen-character lines. */
+.note {
+  display: grid;
+  grid-template-columns: 104px minmax(0, 1fr);
+  column-gap: 20px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line-strong);
+}
+
+.note + .note {
+  margin-top: 7px;
+}
+
+/* Shown only when the ledger holds more than the panel does. */
+.notes-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-self: start;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+}
+
+.notes-more span {
+  transition: transform 0.2s ease;
+}
+
+.notes-more:hover span {
+  transform: translateX(4px);
+}
+
+.note-tag {
+  grid-column: 1;
+  grid-row: 1 / span 3;
+  margin: 0;
+  padding-top: 3px;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  line-height: 1.6;
+  letter-spacing: 0.14em;
+  color: var(--gold);
+  opacity: 0.85;
+}
+
+/* Stacked under the facets: the ledger sorts by date, so the date is worth
+   showing, and it is the one thing that changes without the copy changing. */
+.note-date {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted-dim);
+  letter-spacing: 0.08em;
+  opacity: 1;
+}
+
+/* Explicit rows, because the tag spans 1–3 and grid auto-placement does not
+   backfill: without this the heading lands on row 4 and every card is 57px
+   taller than it looks. */
+.note h3 {
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0 0 5px;
+  font-size: 16.5px;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+}
+
+/* The summary only. `p` alone would catch `.note-tag` too and drag the facets
+   into the right-hand column, on top of the copy. */
+.note > p:not(.note-tag) {
+  grid-column: 2;
+  grid-row: 2;
+  margin: 0;
+  max-width: 34em;
+  font-size: 13.8px;
+  line-height: 1.75;
+  color: var(--muted);
+  /* Two lines, whatever the language. The full text is one click away, and a
+     list where one card runs five lines stops reading as a list. */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+
+.note-link {
+  grid-column: 2;
+  grid-row: 3;
+  align-self: start;
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 7px;
+  font-size: 12.5px;
+  color: #cfd3cf;
+  border-bottom: 1px solid #ffffff26;
+  padding-bottom: 3px;
+}
+
+.note-link span:last-child {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.note-link:hover {
+  border-bottom-color: var(--gold);
+  color: #fff;
+}
+
+/* ---------- product ---------- */
+
+.status-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 18px 0 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 clamp(24px, 3vw, 48px);
+  margin: clamp(30px, 3.4vw, 44px) 0 0;
+}
+
+.features > div {
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+}
+
+.features dt {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+}
+
+.features dd {
+  margin: 8px 0 0;
+  font-size: 13.5px;
+  line-height: 1.72;
+  color: var(--muted);
+}
+
+.product-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: clamp(28px, 3vw, 40px);
+}
+
+/* The panel has to hold one product in full and still list the others. Same
+   arrangement as the research panel: cap the height, scroll inside, hand the
+   wheel back at the ends. */
+#product .panel-inner {
+  margin-block: auto;
+  min-height: 0;
+  max-height: calc(100% - 72px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+
+#product .panel-inner::-webkit-scrollbar {
+  display: none;
+}
+
+.product-status-note {
+  color: var(--muted-dim);
+}
+
+.product-feature h2 a:hover {
+  color: var(--gold);
+}
+
+/* The rest list is secondary: it sits low in the panel, where the figure is
+   already bright behind the text column. Keeping the rows in a narrow column
+   holds the tagline and the facet label over the dark part instead of letting
+   the right-aligned label land on a lit edge. */
+.product-rest {
+  max-width: min(100%, 30rem);
+  margin-top: clamp(22px, 2.4vw, 30px);
+}
+
+.product-rest-label {
+  margin: 0 0 6px;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-dim);
+}
+
+.product-rest-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.product-rest-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 14px;
+  padding: 11px 0;
+  border-top: 1px solid var(--line);
+  transition: background 0.15s ease;
+}
+
+.product-rest-list li:last-child .product-rest-item {
+  border-bottom: 1px solid var(--line);
+}
+
+.product-rest-item:hover {
+  background: #ffffff06;
+}
+
+.product-rest-name {
+  font-size: 14.5px;
+  color: var(--paper);
+}
+
+.product-rest-tagline {
+  overflow: hidden;
+  font-size: 12.8px;
+  color: var(--muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.product-rest-meta {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  white-space: nowrap;
+  opacity: 0.8;
+}
+
+.product-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+}
+
+.product-all span {
+  transition: transform 0.2s ease;
+}
+
+.product-all:hover span {
+  transform: translateX(4px);
+}
+
+.product-empty {
+  margin: 20px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+@media (max-width: 900px) {
+  #product .panel-inner {
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+/* ---------- about ---------- */
+
+.quote {
+  max-width: 19em;
+  margin: clamp(26px, 3vw, 38px) 0 0;
+  padding-left: 22px;
+  border-left: 1px solid var(--gold);
+  font-family: var(--serif);
+  font-size: clamp(19px, 1.8vw, 24px);
+  line-height: 1.6;
+  color: #dedbd3;
+}
+
+#about .panel-inner > p {
+  max-width: 31em;
+  margin: 24px 0 0;
+  font-size: clamp(14.5px, 1.02vw, 16px);
+  line-height: 1.85;
+  color: #a2a8a5;
+}
+
+.contact {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 32px);
+  margin: clamp(30px, 3.6vw, 46px) 0 0;
+}
+
+.contact > div {
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.contact dt {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  color: var(--muted-dim);
+}
+
+.contact dd {
+  margin: 9px 0 0;
+  font-size: 13px;
+  color: #c9cdc9;
+  overflow-wrap: anywhere;
+}
+
+.contact dd a {
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.contact dd a:hover {
+  border-bottom-color: var(--gold);
+}
+
+/* ---------- footer ---------- */
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+  margin-top: clamp(34px, 4vw, 52px);
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.footer-brand .brand-mark {
+  width: 18px;
+  height: 18px;
+  opacity: 0.75;
+}
+
+.footer-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--muted-dim);
+}
+
+.footer-meta a {
+  color: var(--muted-dim);
+  border-bottom: 1px solid #ffffff1f;
+}
+
+.footer-meta a:hover {
+  color: var(--muted);
+}
+
+/* ---------- responsive ---------- */
+
+/* Laptop screens are shorter than the design frame. Rather than let the copy
+   run under the header, the research list goes two-up and the whole panel
+   tightens; nothing here changes the wide 900px-and-taller layout. */
+@media (max-height: 850px) and (min-width: 901px) {
+  h2 {
+    font-size: clamp(26px, 2.9vw, 36px);
+  }
+  .kicker {
+    margin-bottom: 12px;
+  }
+  .lead {
+    margin-top: 12px;
+    font-size: 14.8px;
+    line-height: 1.72;
+  }
+  .hero-description {
+    margin-top: 18px;
+  }
+  .hero-actions {
+    margin-top: 26px;
+  }
+  .source-link {
+    margin-top: 22px;
+  }
+  .notes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 30px;
+    row-gap: 16px;
+    margin-top: 22px;
+  }
+  .note,
+  .note + .note {
+    grid-template-columns: minmax(0, 1fr);
+    margin-top: 0;
+    padding-top: 11px;
+  }
+  .note-tag {
+    grid-row: auto;
+    padding-top: 0;
+    margin-bottom: 6px;
+  }
+  /* One column here, so the explicit rows from the wide layout have to go:
+     left in place they put the tag and the heading in the same cell. */
+  .note h3,
+  .note > p:not(.note-tag),
+  .note-link {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .note h3 {
+    font-size: 15.5px;
+    margin-bottom: 5px;
+  }
+  .note > p:not(.note-tag) {
+    font-size: 13.2px;
+    line-height: 1.65;
+  }
+  .note-link {
+    margin-top: 8px;
+  }
+  .status-line {
+    margin-top: 12px;
+  }
+  .features {
+    margin-top: 24px;
+  }
+  .features > div {
+    padding: 13px 0;
+  }
+  .features dd {
+    font-size: 13px;
+    line-height: 1.65;
+  }
+  .product-actions {
+    margin-top: 26px;
+  }
+  .quote {
+    margin-top: 22px;
+    font-size: 19px;
+  }
+  #about .panel-inner > p {
+    margin-top: 16px;
+    font-size: 14.2px;
+    line-height: 1.72;
+  }
+  .contact {
+    margin-top: 24px;
+  }
+  .footer {
+    margin-top: 24px;
+  }
+}
+
+@media (max-height: 700px) and (min-width: 901px) {
+  .panel {
+    padding-bottom: 62px;
+  }
+  h2 {
+    font-size: clamp(24px, 2.7vw, 32px);
+  }
+  .lead {
+    font-size: 14.2px;
+    line-height: 1.66;
+  }
+  .notes {
+    margin-top: 18px;
+    row-gap: 10px;
+  }
+  .note p {
+    font-size: 12.8px;
+    line-height: 1.6;
+  }
+  .features {
+    margin-top: 18px;
+  }
+  .features > div {
+    padding: 11px 0;
+  }
+  .product-actions {
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 1180px) {
+  .notes {
+    gap: 18px;
+  }
+  .foot-note {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  :root {
+    --header: 72px;
+  }
+
+  /* Below the tablet breakpoint the deck becomes an ordinary vertical page:
+     full-height panels with this much copy are worse than scrolling. The
+     figure keeps the first panel and gets out of the way after it. */
+  html {
+    height: auto;
+  }
+  body {
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+  .viewport {
+    height: auto;
+    overflow: visible;
+  }
+  .deck {
+    display: block;
+    height: auto;
+    transform: none !important;
+  }
+  .panel {
+    height: auto;
+    min-height: 100svh;
+    display: block;
+    padding: calc(var(--header) + 34px) var(--pad) 64px;
+  }
+  .panel::before,
+  .panel[data-side="right"]::before {
+    background: var(--ink);
+  }
+  #top {
+    padding-bottom: calc(52svh + 24px);
+  }
+  #top::before {
+    background: none;
+  }
+  .panel-inner,
+  #top .panel-inner,
+  .panel[data-side="right"] .panel-inner {
+    width: 100%;
+    margin-inline: 0;
+  }
+  .panel-foot {
+    display: none;
+  }
+
+  /* The figure becomes a short band under the copy instead of a backdrop. */
+  .stage {
+    top: auto;
+    bottom: 0;
+    height: 52svh;
+  }
+  .stage-scrim {
+    background: linear-gradient(
+      180deg,
+      var(--ink) 0%,
+      #0b0d0e00 26%,
+      #0b0d0e00 70%,
+      #0b0d0ecc 100%
+    );
+  }
+
+  .header {
+    gap: 20px;
+    background: #0b0d0ee6;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+  nav {
+    position: fixed;
+    inset: var(--header) 0 auto;
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    padding: 10px var(--pad) 26px;
+    background: #0b0d0e;
+    border-bottom: 1px solid var(--line);
+  }
+  nav[data-open="true"] {
+    display: flex;
+  }
+  nav a {
+    width: 100%;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 15px;
+  }
+  .menu {
+    display: inline-flex;
+  }
+  .language {
+    padding-left: 16px;
+  }
+
+  /* Without JavaScript the menu button cannot open anything, so the links stay
+     in the header as a wrapping row instead of disappearing. */
+  html:not(.js) .header {
+    height: auto;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+  html:not(.js) nav {
+    position: static;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px 22px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: none;
+    border: 0;
+  }
+  html:not(.js) nav a {
+    width: auto;
+    padding: 6px 0;
+    border: 0;
+    font-size: 13px;
+  }
+
+  .notes,
+  .features,
+  .contact {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+  .note {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .note + .note {
+    margin-top: 22px;
+  }
+  .note-tag {
+    grid-row: auto;
+    padding-top: 0;
+    margin-bottom: 8px;
+  }
+  /* One column here, so the explicit rows from the wide layout have to go:
+     left in place they put the tag and the heading in the same cell. */
+  .note h3,
+  .note > p:not(.note-tag),
+  .note-link {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .contact {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 620px) {
+  .kicker {
+    margin-bottom: 16px;
+  }
+  h1 {
+    letter-spacing: -0.028em;
+  }
+  .hero-actions .button {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+  }
+}

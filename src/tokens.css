@@ -1,0 +1,81 @@
+/* Shared by the deck (style.css) and the article pages (article.css). Anything
+   that decides the page's own scrolling stays in the page's stylesheet. */
+:root {
+  --ink: #0b0d0e;
+  --ink-soft: #101314;
+  --paper: #e9e7e1;
+  --muted: #8d9497;
+  --muted-dim: #6c7376;
+  --line: #ffffff14;
+  --line-strong: #ffffff26;
+  --gold: #d9b45f;
+  --pad: clamp(22px, 5.2vw, 96px);
+  --header: 88px;
+  --sans:
+    Inter, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB",
+    "Microsoft YaHei", sans-serif;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --serif: "Songti SC", "Source Han Serif SC", "Noto Serif SC", "Iowan Old Style",
+    Georgia, serif;
+  font-family: var(--sans);
+  color: var(--paper);
+  background: var(--ink);
+  color-scheme: dark;
+  font-synthesis: none;
+  font-weight: 400;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--paper);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+img,
+svg {
+  display: block;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 6px;
+}
+
+a:hover {
+  color: #fff;
+}
+
+::selection {
+  background: #d9b45f40;
+  color: #fff;
+}

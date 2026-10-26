@@ -1,0 +1,45 @@
+/* Atoms both surfaces use: the deck (style.css) and a standalone article-style
+   page (product.css). Anything that decides how a page scrolls stays out. */
+
+.status-dot {
+  width: 5px;
+  height: 5px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 10px #d9b45f55;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 22px;
+  font-size: 13.5px;
+  border: 1px solid transparent;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.button.primary {
+  background: var(--paper);
+  color: #0b0d0e;
+  font-weight: 500;
+}
+
+.button.primary:hover {
+  background: #fff;
+  color: #0b0d0e;
+}
+
+.button.secondary {
+  border-color: var(--line-strong);
+  color: var(--paper);
+}
+
+.button.secondary:hover {
+  border-color: #ffffff45;
+  background: #ffffff08;
+}

@@ -1,0 +1,68 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+*.tsbuildinfo
+
+# Generated content indexes and runtime payloads.
+# Rebuilt by `npm run predev` / `npm run prebuild`; do not edit or commit.
+research/index.json
+product/index.json
+public/research/index.json
+public/research/topics/*.json
+public/product/index.json
+public/product/items/*.json
+
+# Internal / classified material — keep out of the public repo.
+# OPS.md contains host, network and deployment details.
+OPS.md
+OPS.*.md
+internal/
+private/
+drafts/
+secrets/
+*.rtopic.json
+
+# Trademark filing material — never public.
+# Applicant identity documents, class strategy, search results, agent quotes.
+trademark/
+
+# Secrets and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+.npmrc
+.netrc
+
+# Local overrides and machine-specific files
+*.local
+
+# Logs and caches
+*.log
+npm-debug.log*
+.npm/
+.cache/
+.vite/
+coverage/
+
+# Editor and OS files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*~
+
+# Test artifacts
+test-results/
+playwright-report/
+
+# Local reference screenshots (not shipped)
+preview-*.png

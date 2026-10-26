@@ -1,0 +1,17 @@
+{
+  "schema": "idefinity.product.catalog/1",
+  "updated": "2026-10-25",
+  "categories": [
+    { "id": "database", "zh": "数据库", "en": "Database" },
+    { "id": "interface", "zh": "界面", "en": "Interface" },
+    { "id": "tooling", "zh": "工具", "en": "Tooling" },
+    { "id": "service", "zh": "服务", "en": "Service" }
+  ],
+  "stages": [
+    { "id": "concept", "zh": "构想", "en": "Concept" },
+    { "id": "alpha", "zh": "内测", "en": "Alpha" },
+    { "id": "beta", "zh": "公测", "en": "Beta" },
+    { "id": "stable", "zh": "稳定", "en": "Stable" },
+    { "id": "retired", "zh": "停止维护", "en": "Retired" }
+  ]
+}
