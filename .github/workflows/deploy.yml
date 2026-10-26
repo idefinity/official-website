@@ -21,6 +21,33 @@ jobs:
     # live, and a pending approval would silently stall every push to main.
     steps:
       - uses: actions/checkout@v4
+        with:
+          # The scope step below compares this push with the commit before it,
+          # so the history has to be in the clone. The repository is small.
+          fetch-depth: 0
+
+      - name: What changed
+        id: scope
+        env:
+          BEFORE: ${{ github.event.before }}
+          SHA: ${{ github.sha }}
+          EVENT: ${{ github.event_name }}
+        # Two tiers, because the shape of the work does not justify a browser
+        # download on every run: an article push changes data the code already
+        # renders, while a change to src or to a document can break things only
+        # a live page reveals. Content-only pushes take the fast tier; anything
+        # else, an unreadable range, or a manual run takes the full suite.
+        run: |
+          full() { echo "code=true" >> "$GITHUB_OUTPUT"; exit 0; }
+          [ "$EVENT" = push ] || full
+          git cat-file -e "$BEFORE^{commit}" 2>/dev/null || full
+          changed=$(git diff --name-only "$BEFORE" "$SHA") || full
+          [ -n "$changed" ] || full
+          # Anything that is not an article or a product entry earns the browser.
+          if printf '%s\n' "$changed" | grep -vE '^(research|product)/' | grep -q .; then
+            full
+          fi
+          echo "code=false" >> "$GITHUB_OUTPUT"
 
       - uses: actions/setup-node@v4
         with:
@@ -29,15 +56,34 @@ jobs:
 
       - run: npm ci
 
+      # The index generators refuse invalid entries, but they do not look for
+      # the two sources of the taxonomy drifting apart, so ask directly.
+      - name: Validate the content
+        run: |
+          npm run research -- validate
+          npm run product -- validate
+
       # The build is `tsc --noEmit && vite build`, and the prebuild regenerates
       # the two content indexes, so dist is wholly derived from the repository.
       - run: npm run build
 
+      - name: Check the built tree
+        run: npm run check:build
+
+      - name: Cache Chromium
+        if: steps.scope.outputs.code == 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ hashFiles('package-lock.json') }}-chromium
+
       - name: Install browsers for the health check
+        if: steps.scope.outputs.code == 'true'
         run: npx playwright install --with-deps chromium
 
-      - name: Health check the built site
+      - name: Health check in a browser
         # Port 4180 is the address check.mjs expects by default.
+        if: steps.scope.outputs.code == 'true'
         run: |
           npx vite preview --host 127.0.0.1 --port 4180 &
           for i in $(seq 1 30); do

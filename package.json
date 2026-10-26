@@ -15,6 +15,7 @@
     "preview": "vite preview --host 127.0.0.1",
     "capture": "node scripts/capture-fallback.mjs",
     "check": "node scripts/check.mjs",
+    "check:build": "node scripts/check-build.mjs",
     "research": "node scripts/research.mjs",
     "product": "node scripts/product.mjs",
     "bench": "node scripts/bench-frame.mjs"
