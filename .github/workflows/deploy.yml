@@ -1,0 +1,72 @@
+name: deploy
+
+# Only main deploys, and only one at a time: two runs swapping the live
+# symlink at once would race, and the second would win on whatever it read.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # No `environment:` here on purpose. An environment is where approval rules
+    # live, and a pending approval would silently stall every push to main.
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - run: npm ci
+
+      # The build is `tsc --noEmit && vite build`, and the prebuild regenerates
+      # the two content indexes, so dist is wholly derived from the repository.
+      - run: npm run build
+
+      - name: Install browsers for the health check
+        run: npx playwright install --with-deps chromium
+
+      - name: Health check the built site
+        # Port 4180 is the address check.mjs expects by default.
+        run: |
+          npx vite preview --host 127.0.0.1 --port 4180 &
+          for i in $(seq 1 30); do
+            curl -sf http://127.0.0.1:4180/ >/dev/null && break
+            sleep 1
+          done
+          node scripts/check.mjs
+
+      - name: Ship it
+        # The archive goes in on stdin. The key on the server may only run
+        # the release script, so there is nothing here to misuse if the key
+        # leaks: no shell, no forwarding, no file read, no path argument.
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+        run: |
+          install -m 600 /dev/null ci_key
+          printf '%s\n' "$DEPLOY_KEY" > ci_key
+          tar czf - -C dist . | ssh \
+            -i ci_key \
+            -o UserKnownHostsFile=.github/known_hosts \
+            -o StrictHostKeyChecking=yes \
+            -o IdentitiesOnly=yes \
+            -o BatchMode=yes \
+            -o ConnectTimeout=15 \
+            "deploy@idefinity.com"
+
+      - name: Confirm it is live
+        run: |
+          for path in / /research.html /product.html /sitemap.xml /robots.txt; do
+            code=$(curl -sSf -o /dev/null -w '%{http_code}' "https://idefinity.com${path}")
+            echo "  ${path} -> ${code}"
+          done
